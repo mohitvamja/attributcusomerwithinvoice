@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Checkout\Model\ShippingInformationManagement">
+        <plugin name="test-custom"
+                type="Customer\Attribute\Model\Checkout\ShippingInformationManagementPlugin" sortOrder="1"/>
+    </type>
+
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="customtext" xsi:type="string">sales_order.customtext</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- <preference for="Magento\Sales\Model\Order\Pdf\Items\Invoice\DefaultInvoice" type="Customer\Attribute\Model\Magento\Sales\Order\Pdf\Items\Invoice\DefaultInvoice" /> -->
+    <preference for="Magento\Sales\Model\Order\Pdf\Invoice" type="Customer\Attribute\Model\Magento\Sales\Order\Pdf\Invoice" /> 
+
+    <preference for="Magento\Sales\Model\Order\Pdf\Items\Invoice\DefaultInvoice"
+                type="Customer\Attribute\Model\Order\Pdf\Items\Invoice\DefaultInvoice"/>
+</config>

@@ -1,0 +1,19 @@
+<?php
+
+$customtext = $block->getCustomer()->getCustomAttribute('customtext');
+
+$customtextatt = $customtext ? $customtext->getValue() : null;
+
+?>
+<fieldset class="fieldset create account" >
+    <legend class="legend">
+       
+    </legend>
+    <br>
+    <div class="field customtext">
+        <label for="customtext" class="label"><span><?php echo 'customtext';?></span></label>
+        <div class="control">
+            <input id="customtext" class="input-text" name="customtext" value="<?php echo $customtextatt;?>" title='phone_number' type="text" autocomplete="off" />
+        </div>
+    </div>
+</fieldset>

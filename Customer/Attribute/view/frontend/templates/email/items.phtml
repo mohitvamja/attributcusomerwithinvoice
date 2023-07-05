@@ -1,0 +1,119 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php $_order = $block->getOrder() ?>
+<?php if ($_order): ?>
+    <?php $_items = $_order->getAllItems();
+     ?>
+
+
+
+    <table class="email-items" style="width: 650px; text-align="left"">
+
+            <tr>
+                <td style="background-color:#EAEAEA; width: 320px;  ">
+                    <?= /* @escapeNotVerified */  __('Items') ?>
+                </td>
+                <td style="background-color:#EAEAEA; width: 100px; ">
+                    <?= /* @escapeNotVerified */  __('Sku') ?>
+                </td>
+
+                 <td style="background-color:#EAEAEA; width: 100px; ">
+                    <?= /* @escapeNotVerified */  __('Customtext') ?>
+                </td>
+                <td style="background-color:#EAEAEA;width: 100px; ">
+                    <?= /* @escapeNotVerified */  __('Qty') ?>
+                </td>
+                <td style="background-color:#EAEAEA; width: 120px;">
+                    <?= /* @escapeNotVerified */  __('Subtotal') ?>
+                </td>
+            </tr>
+
+        <?php foreach ($_items as $_item): ?>
+            <?php if (!$_item->getParentItem()) : ?>
+                <tbody>
+                  <tr>
+                <td class="item-info">
+                    <?= /* @escapeNotVerified */  $_item->getName()?>
+                   <table class="item-info">
+
+            <?php 
+            $options = $_item->getProductOptions();           
+            $s="";
+            $d="";
+    if (isset($options['options']) ) {        
+        foreach ($options['options'] as $option) {
+            $s= $option['label'];
+            $d= $option['value'];
+        }
+    }
+            ?>
+
+                       <tr class="item-price">
+                           <td class="item-price"><?= /* @escapeNotVerified */ $s?></td>
+                       </tr>
+                       <tr class="item-price">
+                           <td class="item-price"><?= /* @escapeNotVerified */ $d?></td>
+                       </tr>
+                   </table>
+                </td>
+                <td class="item-qty">
+                    <?= /* @escapeNotVerified */  $_item->getSku() ?>
+                </td>
+                <td class="item-customtext">
+                    <?= /* @escapeNotVerified */  $_item->getCustomtext() ?>
+                </td>
+                <td class="item-price">
+                    <?= /* @escapeNotVerified */  $_item->getQtyOrdered() ?>
+                </td>
+                <td class="item-sku">
+                    <?= /* @escapeNotVerified */  $_item->getPrice() ?>
+                </td>
+            </tr>
+                </tbody>
+            <?php endif; ?>
+        <?php endforeach; ?></table>
+           <table align="right" style="border-collapse: separate;
+    border-spacing: 0 1em; width: 650px;">
+  <tr>
+    <td align="right"><?= /* @escapeNotVerified */  __('Subtotal') ?></td>
+    <td align="right">  <?= /* @escapeNotVerified */  $_order->getSubtotal() ?></td>
+  </tr>
+  <tr>
+    <td align="right"><?= /* @escapeNotVerified */  __('Shipping & Handling') ?></td>
+    <td align="right"><?= /* @escapeNotVerified */  $_order->getShippingAmount() ?></td>
+  </tr>
+  <tr>
+    <td align="right"><?= /* @escapeNotVerified */  __('Tax') ?></td>
+    <td align="right"><?= /* @escapeNotVerified */  $_order->getTaxAmount() ?></td>
+  </tr>
+  <tr>
+    <th align="right"><?= /* @escapeNotVerified */  __('Grant total') ?></th>
+    <th align="right"><?= /* @escapeNotVerified */  $_order->getGrandTotal() ?></th>
+  </tr>
+</table>
+
+    <?php if ($this->helper('Magento\GiftMessage\Helper\Message')->isMessagesAllowed('order', $_order, $_order->getStore()) && $_order->getGiftMessageId()): ?>
+        <?php $_giftMessage = $this->helper('Magento\GiftMessage\Helper\Message')->getGiftMessage($_order->getGiftMessageId()); ?>
+        <?php if ($_giftMessage): ?>
+            <br />
+            <table class="message-gift">
+                <tr>
+                    <td>
+                        <h3><?= /* @escapeNotVerified */  __('Gift Message for this Order') ?></h3>
+                        <strong><?= /* @escapeNotVerified */  __('From:') ?></strong> <?= $block->escapeHtml($_giftMessage->getSender()) ?>
+                        <br /><strong><?= /* @escapeNotVerified */  __('To:') ?></strong> <?= $block->escapeHtml($_giftMessage->getRecipient()) ?>
+                        <br /><strong><?= /* @escapeNotVerified */  __('Message:') ?></strong>
+                        <br /><?= $block->escapeHtml($_giftMessage->getMessage()) ?>
+                    </td>
+                </tr>
+            </table>
+        <?php endif; ?>
+    <?php endif; ?>
+<?php endif; ?>
